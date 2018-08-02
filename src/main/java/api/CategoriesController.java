@@ -1,7 +1,10 @@
 package api;
 
 import java.io.IOException;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +25,11 @@ public class CategoriesController {
        return categoryRepository.findAll();
     }
 	
+	@RequestMapping(value = "/categories/{id}", method=RequestMethod.GET)
+	public @ResponseBody Optional<Category> getCategory(@PathVariable final Long id) {
+       return categoryRepository.findById(id);
+    }
+	
 	@RequestMapping(value = "/categories", method=RequestMethod.POST)
     public String createCategory(@RequestBody String jsonString) {
 		Category a;
@@ -40,15 +48,12 @@ public class CategoriesController {
         }
         return "Error";
     }
+	
+	@RequestMapping(value = "/categories/{id}", method=RequestMethod.DELETE)
+	public @ResponseBody String deleteCategory(@PathVariable final Long id) {
+		categoryRepository.deleteById(id);
+		return "Successuflly deleted id: " + id;
+    }
 }
 	
-//	@RequestMapping(value = "/categories/1", method=RequestMethod.GET)
-//    public Song renderSong() {
-//        return new Song();
-//    }
-//	
-//	@RequestMapping(value = "/songs", method=RequestMethod.POST)
-//    public String createSong(@RequestBody String jsonString) {
-//        return jsonString;
-//    }
 
